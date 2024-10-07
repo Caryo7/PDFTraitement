@@ -1,0 +1,31 @@
+##FONTS
+0: Calibri, 12
+1: Calibri, 12, underline
+2: Calibri, 15, bold
+3: Calibri, 13, underline
+4: Calibri, 14, italic
+5: Courier, 10
+6: Cambria, 12
+7: Lucida Console, 10
+8: Calibri, 12, italic
+101: Calibri, 12, bold
+102: Calibri, 12, italic
+103: Calibri, 12, underline
+
+##STYLES
+default: 0, font/0
+bold: 0, font/101
+italic: 0, font/102
+underline: 0, font/103
+center: 0, font/0, justify/center
+link: 0, foreground/blue, font/1
+link_interne: 0, foreground/blue, font/1
+1: 1, font/2
+2: 1, font/3
+3: 1, font/4
+5: 0, font/5, background/#f0f0f0
+6: 0, font/6
+7: 0, font/7
+8: 0, font/7
+10: 0, font/8, foreground/#ffff00
+11: 0, font/0, foreground/#ff0000

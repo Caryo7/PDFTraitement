@@ -1,0 +1,14 @@
+{
+    "0": {
+        "title": "Ouvrir un fichier",
+        "content": "<p>Il y a quatre moyens d'ouvrir un fichier : 1. Vous pouvez commencez par l'ouvrir depuis le menu bar : Fichier -> Ouvrir. 2. Vous pouvez ouvrir votre fichier depuis l'explorateur windows, 3. Vous pouvez utiliser les fichiers récents, toujours dans le menu Fichier -> Fichiers Récents. Enfin, en quatre, vous pouvez utiliser le glisser déposer de votre fichier vers la zone de texte.</p>"
+        },
+    "1": {
+        "title": "Importation",
+        "content": "<p>Il est possible d'importer différents types de fichiers. En ce qui conscerne les PDF, il est possible d'utiliser un programme intégré de reconnaissance de caractère (OCR). Pour cela, utiliser la fonction dans la barre des menus : Fichier -> Importer Dactyolgraphie. La fonction porte se nom car elle a été conçu à la base pour scanner du texte tapé à la machine à écrire.</p>"
+        },
+	"2": {
+		"title": "Mon troisième conseil",
+		"content": "<p>Selon les septiques, il faut douter de tout, en tout point, tout le temps, pour bien comprendre la philosophie. Ces derniers ne sont pas des philosophes pour deux sous :)</p>"
+	}
+}
