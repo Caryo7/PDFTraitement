@@ -6,6 +6,7 @@ py -m pip install openpyxl
 py -m pip install customtkinter
 py -m pip install tkinterdnd2
 py -m pip install humanize
+py -m pip install glob
 pause
 pip install --upgrade pip
 pip install pypdf2
@@ -15,4 +16,5 @@ pip install openpyxl
 pip install customtkinter
 pip install tkinterdnd2
 pip install humanize
+pip install glob
 pause

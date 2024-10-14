@@ -288,7 +288,7 @@ class HTML(Frame):
             return
 
         fonts = {}
-        css = {}
+        css = self.css.copy()
         dest = None
 
         for line in r.split('\n'):

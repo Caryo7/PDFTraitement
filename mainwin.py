@@ -23,13 +23,14 @@ from filesetting import *
 from pagesfncts import *
 from winlocker import *
 from tips import *
+import glob
 
 ####################################################################### problème sur la suppression de pages dans le fichier !!! def remove(self, evt, mode):
 
 def CLEAR_TEMP(): # Pour vider le dossier temporaire
-    p = Path('./temp_files/')
-    for i in list(p.glob('**/*.*')):
-        os.remove(i)
+    files = glob.glob(os.path.abspath('./temp_files/*'))
+    for f in files:
+        os.remove(f)
 
 class StartupWidget:
     def __init__(self, master):

@@ -34,9 +34,9 @@ class ImageGenerator:
         b = ttk.Button(self.master, text = '...', width = 3, command = self.import_image)
         b.grid(row = 1, column = 2, padx = 5, pady = 5, sticky = 'nswe')
 
-        self.w = ttk.Spinbox(self.master, from_ = 20, to = 300, command = lambda: self.draw(self.w))
+        self.w = ttk.Spinbox(self.master, from_ = 20, to=9999, command = lambda: self.draw(self.w))
         self.w.grid(row = 3, column = 1, padx = 5, pady = 5, sticky = 'we')
-        self.h = ttk.Spinbox(self.master, from_ = 20, to = 300, command = lambda: self.draw(self.h))
+        self.h = ttk.Spinbox(self.master, from_ = 20, to=9999, command = lambda: self.draw(self.h))
         self.h.grid(row = 2, column = 1, padx = 5, pady = 5, sticky = 'we')
 
         self.canvas = Canvas(self.master)
@@ -265,6 +265,8 @@ class App:
             txt = sapp.get()
             if txt:
                 self.text.insert('insert', txt)
+
+        self.color(None)
 
         try:
             from_ = self.text.index('sel.first')

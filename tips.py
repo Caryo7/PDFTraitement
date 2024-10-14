@@ -3,10 +3,13 @@ from tkinter import ttk
 from tkinter.ttk import *
 from customwidgets import *
 from pathlib import Path
+from zipfile import *
+from configparser import *
 import os
+import glob
 
 class TipsWin:
-    def __init__(self, parent, images, title, nb, total, text, next_cmd, prev_cmd, dam_cmd):
+    def __init__(self, parent, images, title, nb, total, text, css, next_cmd, prev_cmd, dam_cmd):
         self.next_cmd, self.prev_cmd, self.dam_cmd = next_cmd, prev_cmd, dam_cmd
         self.total = total
 
@@ -26,9 +29,9 @@ class TipsWin:
         lb_ico = ttk.Label(self.root, image = images.Astuces.big, text = '')
         lb_ico.grid(row = 0, column = 4, padx = 3, pady = 3, sticky = 'nswe')
 
-        self.label = HTML(self.root, view = 'notable.noscroll', width = 30, height = 7)
+        self.label = HTML(self.root, view = 'notable.noscroll', width = 40, height = 8)
         self.label.grid(row = 1, column = 0, padx = 3, pady = 5, columnspan = 5, sticky = 'nswe')
-        #self.label.load_css('')
+        self.label.load_css(content = css)
         self.label.add_content(text)
         b1 = ttk.Button(self.root, image = self.next_img, command = self.up)
         b1.grid(row = 0, column = 1, padx = 3, pady = 3, sticky = 'nswe')
@@ -56,37 +59,26 @@ class TipsWin:
             self.dam_cmd()
         self.root.destroy()
 
-    def change(self, value, title, nb):
+    def change(self, value, title, css, nb):
         self.label.add_content(value)
+        self.label.load_css(content = css)
         self.root.title(str(nb+1) + '/' + str(self.total) + ' ' + title)
 
 
-class JSon:
-    def __init__(self, path, encoding = 'utf-8'):
-        self.file = open(path, mode = 'r', encoding = encoding)
-        self.data = json.load(self.file)
-
-    def close(self):
-        self.file.close()
-
-    def tips_list(self):
-        return list(self.data.keys())
-
-    def infos(self, name):
-        return self.data[name]
-
-
 def OpenTips():
-    advices = []
-    p = Path('./tips/')
-    for f in list(p.glob('**/*.html')):
-        fp = open(f, 'r', encoding = 'utf-8')
-        r = fp.read()
-        fp.close()
-        name = str(f).replace('.html', '')
-        while name[0] != '-':
-            name = name[1:]
-        advices.append([name, r])
+    files = glob.glob(os.path.abspath('./tips/*.tips'))
+    advices = [None for i in range(len(files))]
+    for f in files:
+        z = ZipFile(f, 'r')
+        r = z.read('content.html').decode('utf-8')
+        css = z.read('style.css').decode('utf-8')
+        meta = z.read('meta.ini').decode('utf-8')
+        z.close()
+        parser = ConfigParser()
+        parser.read_string(meta)
+        name = parser.get('meta', 'name')
+        iid = int(parser.get('meta', 'id'))
+        advices[iid-1] = [name, r, css]
 
     return advices
 
@@ -107,17 +99,17 @@ class Tips:
         self.start_tips_index(0)
 
     def start_tips_index(self, index):
-        title, text = self.advices[index]
+        title, text, css = self.advices[index]
         nb = self.tips_index
         next_cmd = lambda: self.next_tip()
         prev_cmd = lambda: self.prev_tip()
         dam_cmd = lambda: self.donotaskagain_tip()
 
-        self.tip_window = TipsWin(self.master, self.images, title, index, len(self.advices), text, next_cmd, prev_cmd, dam_cmd)
+        self.tip_window = TipsWin(self.master, self.images, title, index, len(self.advices), text, css, next_cmd, prev_cmd, dam_cmd)
 
     def tip_update(self, index):
-        title, text = self.advices[index]
-        self.tip_window.change(text, title, index)
+        title, text, css = self.advices[index]
+        self.tip_window.change(text, title, css, index)
 
     def next_tip(self):
         self.tips_index += 1
@@ -129,6 +121,7 @@ class Tips:
             self.tips_index = len(self.advices) - 1
 
         self.tips_index -= 1
+        self.tips_index = (self.tips_index+len(self.advices)) % len(self.advices)
         self.tip_update(self.tips_index)
 
     def donotaskagain_tip(self):
