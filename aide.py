@@ -15,7 +15,7 @@ class About:
     def __init__(self, parent, Imager):
         self.root = Toplevel(parent)
         self.root.transient(parent)
-        #self.root.iconbitmap(self.ico['help'])
+        self.root.iconbitmap(Imager.ICONS['Help'])
         self.root.config(borderwidth = 5)
         self.root.title('A propos')
         self.root.columnconfigure(1, weight = 1)
@@ -54,12 +54,12 @@ class About:
                'Copyright :': 'All Right Reserved',
                'separator1': None,
                'Python :': '3.12.2',
-               'Arduino :': '2.0',
                'separator2': None,
-               'Interface Graphique': '1.1',
-               'Compilateur': '1.2',
-               'Langues': '0.1',
-               'Version des fichiers': '1.0',
+               'Interface Graphique': '2.0',
+               'Compilateur': '2.0',
+               'Langues': '0.0',
+               'Version de l\'interface fichier': '3.0',
+               'Version des PDFPRO': '1.0',
                'Version des PDFSEA': '2.0',}
 
         row = 1
@@ -69,13 +69,10 @@ class About:
 
             else:
                 ttk.Label(cad, text = k, style = 'Aide.TLabel').grid(row = row, column = 0, sticky = 'e', padx = 0, pady = 5)
-                l = ttk.Label(cad, text = v, justify = 'left', style = 'Aide.TLabel')
+                l = ttk.Label(cad, text = v, justify = 'left', style = 'Aide.TLabel', cursor = 'hand2' if k == 'Site internet :' else None)
                 l.grid(row = row, column = 1, sticky = 'w', padx = 10, pady = 5)
                 if k == 'Site internet :':
-                    l.bind('<Button-1>', lambda evt: self.open_internet(self.URL))
-                    l.config(style = 'Link.TLabel')
-                elif k == 'Email':
-                    l.bind('<Button-1>', lambda evt: self.open_internet('mailto:' + v))
+                    l.bind('<Button-1>', lambda evt: self.URL)
                     l.config(style = 'Link.TLabel')
 
             row += 1
@@ -121,8 +118,9 @@ class About:
     def Generate(self):
         self.root.wait_window()
 
+
 class Documentation:
-    def __init__(self, file, parent):
+    def __init__(self, file, parent, Imager):
         if file == 'all':
             content = ''
             p = Path('./docs/')
@@ -146,6 +144,7 @@ class Documentation:
             f.close()
 
         self.master = Toplevel(parent)
+        self.master.iconbitmap(Imager.ICONS['Help'])
         self.master.transient(parent)
         self.master.title('Documentation')
         self.master.columnconfigure(0, weight = 1)

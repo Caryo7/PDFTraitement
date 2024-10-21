@@ -38,9 +38,9 @@ class StartupWidget:
         image = image.subsample(2)
         master.resizable(False, False)
         master.overrideredirect(1)
-        label = ttk.Label(master, image = image)
-        label.grid(row = 0, column = 0, sticky = 'nswe')
-        width, height = image.width(), image.height()
+        label = ttk.Label(master, image = image, borderwidth=0)
+        label.grid(row = 0, column = 0, sticky = 'nswe', padx=0, pady = 0)
+        width, height = int(750/2)+5, int(625/2)+5
         w, h = master.winfo_screenwidth(), master.winfo_screenheight()
         x, y = int(w/2 - width/2), int(h/2 - height/2)
         master.geometry(str(width) + 'x' + str(height) + '+' + str(x) + '+' + str(y))

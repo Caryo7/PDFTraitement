@@ -7,6 +7,7 @@ from zipfile import *
 from configparser import *
 import os
 import glob
+import random
 
 class TipsWin:
     def __init__(self, parent, images, title, nb, total, text, css, next_cmd, prev_cmd, dam_cmd):
@@ -48,6 +49,9 @@ class TipsWin:
         b4.grid(row = 2, column = 0, columnspan = 5, padx = 5, pady = 5, sticky = 'nswe')
         ToolTip(b4, text = 'Ne plus afficher les conseils aux démarrages.\nCette option peut être changée dans le menu Edition -> Préférence -> Générales -> Conseils au démarrage')
 
+    def show(self):
+        self.root.wait_window()
+
     def up(self):
         self.next_cmd()
 
@@ -55,7 +59,7 @@ class TipsWin:
         self.prev_cmd()
 
     def destroy(self):
-        if not self.print_tips.get():
+        if self.print_tips.get():
             self.dam_cmd()
         self.root.destroy()
 
@@ -91,7 +95,22 @@ class Tips:
         self.pm = pm
 
     def start_tips(self):
-        self.advices = OpenTips()
+        advs = OpenTips()
+        i = 0
+        for j in range(len(advs)):
+            if advs[i] == None:
+                advs.pop(i)
+            else:
+                i += 1
+
+        self.advices = []
+        passed = []
+        for i in range(min(len(advs), 10)):
+            n = random.randint(0, len(advs)-1)
+            while n in passed:
+                n = random.randint(0, len(advs)-1)
+            passed.append(n)
+            self.advices.append(advs[n])
 
         if self.pm.general.general['tips'] == '0':
             return
@@ -106,6 +125,7 @@ class Tips:
         dam_cmd = lambda: self.donotaskagain_tip()
 
         self.tip_window = TipsWin(self.master, self.images, title, index, len(self.advices), text, css, next_cmd, prev_cmd, dam_cmd)
+        self.tip_window.show()
 
     def tip_update(self, index):
         title, text, css = self.advices[index]

@@ -86,4 +86,14 @@ class Tester:
             print('Ouverture de la fenêtre de recherche')
             self.mw.search()
 
+        if name == 'extract_images':
+            print('Extraction des pages')
+            self.mw.open_PDFfile(path = ['C:\\BenoitData\\Etudes\\_07 TG6\\SI\\COURS_08__MODELISATION_DES_ACTIONS_MECANIQUES_-_TORSEURS_avec_correction_exercice.pdf'])
+            self.mw.onglets.select(0)
+            self.mw.output_folder.set('./tests/images')
+            self.mw.prog_selected.set('ImagesOfPages->./programs/Program-50.pdfsea')
+
         return False
+
+if __name__ == '__main__':
+    e = Tester()

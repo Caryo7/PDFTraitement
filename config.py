@@ -561,6 +561,7 @@ class Configurator:
         self.Imager = Imager
 
         self.master = Toplevel(parent)
+        self.master.iconbitmap(Imager.ICONS['Gear'])
         self.master.transient(parent)
         self.master.title('Préférence')
         self.master.protocol('WM_DELETE_WINDOW', self.Quitter)

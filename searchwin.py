@@ -42,7 +42,7 @@ class ShowText:
 class SearchWin:
     AUTO_OPEN = False
 
-    def __init__(self, parent, file):
+    def __init__(self, parent, file, Imager):
         self.parent = parent
         self.file = file
         self.pdf = PdfReader(self.file)
@@ -52,6 +52,7 @@ class SearchWin:
         l = 10
 
         self.master = Toplevel(parent)
+        self.master.iconbitmap(Imager.ICONS['Search'])
         self.master.transient(parent)
         self.master.title('Rechercher')
         self.master.columnconfigure(0, weight = 1)

@@ -44,29 +44,28 @@ class IOMenu:
             {'type': 'separator'},
             {'type': 'command', 'label': 'Séléctionner toutes les pages', 'key': '<Control-a>', 'command': lambda *_: self.selectall(None, True), 'image': None},
             {'type': 'command', 'label': 'Tout déséléctionner', 'key': '<Control-A>', 'command': lambda *_: self.selectall(None, False), 'image': None},
+            {'type': 'command', 'label': 'Rechercher dans les pages', 'key': '<Control-f>', 'command': lambda *_: self.search(), 'image': self.Imager.Search.menu},
             {'type': 'separator'},
             {'type': 'command', 'label': 'Sépararer le document à la page', 'key': '<Alt-s>', 'command': lambda *_: self.split_page(), 'image': None},
             {'type': 'separator'},
-            {'type': 'command', 'label': 'Rechercher dans les pages', 'key': '<Control-f>', 'command': lambda *_: self.search(), 'image': self.Imager.Search.menu},
-            {'type': 'separator'},
-            {'type': 'command', 'label': 'Préférences', 'key': '<F12>', 'command': lambda *_: self.configure(), 'image': None},
+            {'type': 'command', 'label': 'Préférences', 'key': '<F12>', 'command': lambda *_: self.configure(), 'image': self.Imager.Gear.menu},
             {'type': 'end'},
 
             {'type': 'cascade', 'label': '_Vue', 'key': None, 'image': self.Imager.none.menu},
-            {'type': 'command', 'label': 'Basculer la vue', 'key': '<Control-Tab>', 'command': lambda *_: self.onglets.select(2 - self.onglets.index(self.onglets.select())), 'image': None},
+            {'type': 'command', 'label': 'Basculer la vue', 'key': '<Control-Tab>', 'command': lambda *_: self.onglets.select(2 - self.onglets.index(self.onglets.select())), 'image': self.Imager.Right.menu},
             {'type': 'separator'},
             {'type': 'command', 'label': 'Afficher l\'arborescence des fichiers', 'key': None, 'command': lambda *_: self.onglets.select(0), 'image': None},
-            {'type': 'command', 'label': 'Afficher la liste des pages', 'key': None, 'command': lambda *_: self.onglets.select(1), 'image': None},
+            {'type': 'command', 'label': 'Afficher la liste des pages', 'key': None, 'command': lambda *_: self.onglets.select(1), 'image': self.Imager.LogoIcon.menu},
             {'type': 'command', 'label': 'Afficher l\'arborescence d\'insertion', 'key': None, 'command': lambda *_: self.onglets.select(2), 'image': None},
             {'type': 'end'},
 
             {'type': 'cascade', 'label': '_Projet', 'key': None, 'image': self.Imager.none.menu},
 
             {'type': 'cascade', 'label': '_Définitions', 'key': None, 'image': self.Imager.none.menu},
-            {'type': 'command', 'label': 'Ajouter une interface', 'key': None, 'image': None, 'command': lambda *_: self.new_userForm()},
-            {'type': 'command', 'label': 'Gérer les interfaces', 'key': None, 'image': None, 'command': lambda *_: self.config_def(mode = 0)},
-            {'type': 'command', 'label': 'Ajouter un script', 'key': None, 'image': None, 'command': lambda *_: None},
-            {'type': 'command', 'label': 'Gérer les scripts', 'key': None, 'image': None, 'command': lambda *_: self.config_def(mode = 1)},
+            {'type': 'command', 'label': 'Ajouter une interface', 'key': None, 'image': self.Imager.Add.menu, 'command': lambda *_: self.new_userForm()},
+            {'type': 'command', 'label': 'Gérer les interfaces', 'key': None, 'image': self.Imager.Gear.menu, 'command': lambda *_: self.config_def(mode = 0)},
+            {'type': 'command', 'label': 'Ajouter un script', 'key': None, 'image': self.Imager.Add.menu, 'command': lambda *_: None},
+            {'type': 'command', 'label': 'Gérer les scripts', 'key': None, 'image': self.Imager.Gear.menu, 'command': lambda *_: self.config_def(mode = 1)},
             {'type': 'end'},
 
             {'type': 'cascade', 'label': '_Aide', 'key': None, 'image': self.Imager.none.menu},
@@ -253,7 +252,7 @@ class MenuBar(IOMenu):
 
         pages = self.get_pages()
         file = self.Runner.export_fusion({'pages': pages})
-        srw = SearchWin(self.master, file)
+        srw = SearchWin(self.master, file, self.Imager)
         srw.Generate()
         self.locker.close_function(self.search)
 
@@ -261,7 +260,7 @@ class MenuBar(IOMenu):
         if self.locker.open_function(self.aide_doc): return
         self.locker.aload(self.new_userForm)
 
-        doc = Documentation(file, self.master)
+        doc = Documentation(file, self.master, self.Imager)
         doc.Generate()
         self.locker.close_function(self.aide_doc)
 

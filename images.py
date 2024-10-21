@@ -65,12 +65,16 @@ class Images:
             'Copy': './images/CopyIcon.png',
             'Logo': './images/LogoIcon.png',
             'Errors': './images/ErrorsIcon.png',
-            'Astuces': './images/ErrorsIcon.png',
+            'Astuces': './images/TipsIcon.png',
+            'Gear': './images/GearIcon.png',
             }
 
         self.ICONS = {
             'Logo': './images/logo.ico',
             'Tips': './images/tips.ico',
+            'Help': './images/HelpIcon.ico',
+            'Search': './images/SearchIcon.ico',
+            'Gear': './images/GearIcon.ico',
             }
 
         self.icons = {}

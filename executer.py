@@ -128,6 +128,9 @@ class Equation:
         if infos_op['bi']:
             buffer = buffer.split(op)
             for i in range(len(buffer)):
+                tep = buffer[i]
+                if tep == '':
+                    buffer[i] = '0'
                 buffer[i] = int(buffer[i])
             buffer = tuple(buffer)
 
@@ -152,14 +155,14 @@ class Condition:
         self.equation = equation
         self.output = output.split(';')
 
-    def function(self, i, l):
-        e = Equation(self.equation, {'i': i, 'l': l})
+    def function(self, i, l, p):
+        e = Equation(self.equation, {'i': i, 'l': l, 'p': p})
         if e.test():
             #print('Test réussi, calcul de la sortie')
             self.Result = []
             for op in self.output:
                 #print('Equation de sortie:', op)
-                r = Equation(op, {'i': i, 'l': l})
+                r = Equation(op, {'i': i, 'l': l, 'p': p})
                 self.Result.append(r.compute('left'))
                 #print('Résultat de sortie:', self.Result[-1])
             return [True, self.Result]
@@ -182,6 +185,7 @@ class Runner:
         'RognerFile':    {'class': RognerFile},
         'RotateFile':    {'class': RotateFile},
         'AdditionPage':  {'class': AdditionPage},
+        'ImagesOfPages': {'class': ImagesOfPages},
         'None':          {'class': None},
         'Custom':        {'class': None},
         #'ExtractPages': {'class': ExtractPages},
@@ -317,10 +321,13 @@ class Runner:
             nb, test, output = line.split('\\')
             self.conditions[nb] = {'test': test, 'output': output}
 
-    def function(self, i, l):
+    def function(self, i, l, p=None):
+        if p == None:
+            p = l
+
         for nb, settings in self.conditions.items():
             c = Condition(settings['test'], settings['output'])
-            able, output = c.function(i, l)
+            able, output = c.function(i, l, p)
             if able:
                 return output
 

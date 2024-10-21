@@ -16,5 +16,5 @@ if __name__ == '__main__':
     parser.add_argument('-l', dest = 'files', help = 'Ouvre une liste de fichiers, sans distinctions entre les projets, les pdf ou autres formats.', nargs = '+')
 
     args = parser.parse_args()
-    mw = MainWindow(args)
+    mw = MainWindow(args = args)
     mw.Generate()

@@ -1,4 +1,4 @@
-from PyPDF2 import *
+from pypdf import *
 from pathlib import Path
 from tkinter import *
 from PIL import *
@@ -87,6 +87,67 @@ class ExtractImages: # Fonction d'extraction des images depuis une fonction cond
                 self.get_page(i, dpi)
 
             yield 1
+
+    def close(self):
+        del self.pdf
+
+class ImagesOfPages:
+    def __init__(self, file, function, output, folder, unit):
+        self.unit = unit
+        self.function = function
+        self.file = Path(file)
+        self.output = folder
+        self.pdf = PdfReader(self.file)
+        self.nb_iter = 0
+
+        names = []
+        for page in self.pdf.pages:
+            names.append(0)
+            for image_file_object in page.images:
+                names[-1] += 1
+                self.nb_iter += 1
+
+        self.digits_nb = int(math.log(max(names), 10))+1
+        self.digits_pg = int(math.log(len(self.pdf.pages), 10))+1
+
+    def get_digits(self, nb, mode):
+        nb = str(nb)
+        if mode == 'page':
+            d = self.digits_pg
+        else:
+            d = self.digits_nb
+
+        while len(nb) < d:
+            nb = '0' + nb
+
+        return nb
+
+    def run(self):
+        fs = []
+        for i, page in enumerate(self.pdf.pages):
+            count = 0
+            nb_max, doubles = self.function(i, self.nb_iter, len(self.pdf.pages))
+            for image_file_object in page.images:
+                if count >= nb_max and nb_max != -1:
+                    count += 1
+                    yield 1
+                    continue
+
+                count += 1
+                name = image_file_object.name
+                if name in fs and not doubles:
+                    yield 1
+                    continue
+
+                fs.append(name)
+                fp = self.output + '/P-' + self.get_digits(i+1, 'page') + '_I-' + self.get_digits(count, 'im') + '_' + name
+                try:
+                    with open(fp, "wb") as fp:
+                        fp.write(image_file_object.data)
+                except Exception as e:
+                    pass
+
+                yield 1
 
     def close(self):
         del self.pdf
